@@ -15,6 +15,7 @@ import cc.aito.module.impl.pvp.NoClickDelay;
 import cc.aito.module.impl.util_qol.AutoTool;
 import cc.aito.module.impl.util_qol.NoJumpDelay;
 import cc.aito.module.impl.pvp.Eagle;
+import cc.aito.utils.PingUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -75,6 +76,9 @@ public class ModuleManager {
 
     @Subscribe
     public void onTick(TickEvent event) {
+        if (event.stage == Stage.START) {
+            PingUtils.tick();
+        }
         dispatch(module -> module.onTick(event));
     }
 
