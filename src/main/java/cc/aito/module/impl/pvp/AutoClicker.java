@@ -9,10 +9,10 @@ import cc.polyfrost.oneconfig.events.event.RenderEvent;
 import cc.polyfrost.oneconfig.events.event.Stage;
 import cc.polyfrost.oneconfig.events.event.TickEvent;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.network.NetworkPlayerInfo;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import cc.aito.module.Module;
+import cc.aito.utils.PingUtils;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
 
 import java.lang.reflect.Field;
@@ -77,8 +77,7 @@ public class AutoClicker extends Module {
                 if (entityHit != null) {
                     if (hitSelect && entityHit instanceof EntityPlayer) {
                         EntityPlayer player = (EntityPlayer) entityHit;
-                        NetworkPlayerInfo info = mc.getNetHandler().getPlayerInfo(mc.thePlayer.getUniqueID());
-                        int ping = info == null ? 0 : info.getResponseTime();
+                        int ping = (int) PingUtils.getPing();
                         if (mc.thePlayer.hurtTime >= 10 - attackReduceTick || player.hurtTime <= (ping * 2) / 50) {
                             mc.thePlayer.swingItem();
                             mc.playerController.attackEntity(mc.thePlayer, entityHit);
