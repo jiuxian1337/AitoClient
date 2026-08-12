@@ -3,11 +3,13 @@ package cc.aito.module;
 import cc.aito.event.AttackEvent;
 import cc.aito.event.BlockBreakEvent;
 import cc.aito.event.BlockDamageEvent;
+import cc.aito.event.MoveInputEvent;
 import cc.polyfrost.oneconfig.events.EventManager;
 import cc.polyfrost.oneconfig.events.event.*;
 import cc.polyfrost.oneconfig.libs.eventbus.Subscribe;
 import cc.aito.module.impl.pvp.AutoClicker;
 import cc.aito.module.impl.pvp.FastPlace;
+import cc.aito.module.impl.pvp.MoreKB;
 import cc.aito.module.impl.pvp.NoClickDelay;
 import cc.aito.module.impl.util_qol.AutoTool;
 import cc.aito.module.impl.util_qol.NoJumpDelay;
@@ -26,6 +28,7 @@ public class ModuleManager {
 
         modules.add(new AutoClicker());
         modules.add(new AutoTool());
+        modules.add(new MoreKB());
         modules.add(new NoJumpDelay());
         modules.add(new NoClickDelay());
         modules.add(new FastPlace());
@@ -131,6 +134,11 @@ public class ModuleManager {
     @Subscribe
     public void onAttack(AttackEvent event) {
         dispatch(module -> module.onAttack(event));
+    }
+
+    @Subscribe
+    public void onMoveInput(MoveInputEvent event) {
+        dispatch(module -> module.onMoveInput(event));
     }
 
     @Subscribe

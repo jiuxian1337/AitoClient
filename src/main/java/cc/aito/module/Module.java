@@ -3,6 +3,7 @@ package cc.aito.module;
 import cc.aito.event.AttackEvent;
 import cc.aito.event.BlockBreakEvent;
 import cc.aito.event.BlockDamageEvent;
+import cc.aito.event.MoveInputEvent;
 import cc.polyfrost.oneconfig.config.Config;
 import cc.polyfrost.oneconfig.config.data.Mod;
 import cc.polyfrost.oneconfig.events.EventManager;
@@ -90,6 +91,10 @@ public class Module extends Config implements Wrapper {
 
     /** Called when an attack is sent. Can be cancelled to prevent it. */
     protected void onAttack(AttackEvent event) {
+    }
+
+    /** Called when the movement input is updated. Fields can be overridden. */
+    protected void onMoveInput(MoveInputEvent event) {
     }
 
     /** Called when a packet is received. Can be cancelled. */
