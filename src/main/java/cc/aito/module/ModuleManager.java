@@ -7,6 +7,7 @@ import cc.aito.event.MoveInputEvent;
 import cc.polyfrost.oneconfig.events.EventManager;
 import cc.polyfrost.oneconfig.events.event.*;
 import cc.polyfrost.oneconfig.libs.eventbus.Subscribe;
+import cc.aito.module.impl.pvp.AimAssist;
 import cc.aito.module.impl.pvp.AutoClicker;
 import cc.aito.module.impl.pvp.FastPlace;
 import cc.aito.module.impl.pvp.MoreKB;
@@ -27,6 +28,7 @@ public class ModuleManager {
         EventManager.INSTANCE.register(this);
 
         modules.add(new AutoClicker());
+        modules.add(new AimAssist());
         modules.add(new AutoTool());
         modules.add(new MoreKB());
         modules.add(new NoJumpDelay());
