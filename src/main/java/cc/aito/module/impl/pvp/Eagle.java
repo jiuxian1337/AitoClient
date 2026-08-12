@@ -20,17 +20,12 @@ import org.lwjgl.input.Keyboard;
 
 import java.util.concurrent.ThreadLocalRandom;
 
-/**
- * Auto-sneaks at the edge of a block while bridging, matching the "legit" mode of Vape's
- * Scaffold: sneak only when not moving forward, looking down, and holding a usable block.
- * No block placement / rotation (the "blatant" part).
- */
 public class Eagle extends Module {
 
     @Slider(
             name = "Sneak Delay",
             min = 0f, max = 500f,
-            step = 10 // ms to keep sneaking after leaving the edge, randomized per sneak
+            step = 10
     )
     public int sneakDelay = 200;
 
@@ -47,7 +42,7 @@ public class Eagle extends Module {
     @Slider(
             name = "Pitch",
             min = 0f, max = 90f,
-            step = 1 // only sneak when looking down below this angle
+            step = 1
     )
     public float pitchThreshold = 45f;
 
@@ -84,6 +79,8 @@ public class Eagle extends Module {
     public Eagle() {
         super(new Mod("Eagle", ModType.PVP), "eagle.json");
         initialize();
+        hideIf("pitchThreshold", () -> !pitchCheck);
+        hideIf("blacklistBlocks", () -> !blacklist);
     }
 
     @Override
@@ -96,25 +93,16 @@ public class Eagle extends Module {
         }
     }
 
-    /** Injects the sneak state before the world tick so the movement input sees it. */
     private void onPreEntityUpdate() {
         if (!canActivate()) return;
-
         KeyBinding sneakKey = mc.gameSettings.keyBindSneak;
-        // Physical key state, not KeyBinding.pressed (which our own injection would pollute).
         sneakKeyWasDown = Keyboard.isKeyDown(sneakKey.getKeyCode());
         boolean shouldSneak = false;
-
-        // Vape's LegitScaffoldMode only sneaks when NOT moving forward: while you walk
-        // forward the (scaffold) placement handles the bridging, the sneak kicks in when
-        // you stop at the edge. Without this gate, Eagle would block you while walking.
         float forwardInput = mc.thePlayer.movementInput.moveForward;
         boolean atEdge = forwardInput <= 0.0f;
         if (forwardInput > 0.0f) {
             atEdge = false;
         }
-
-        // Edge detection: no ground below the player's next position -> about to walk off.
         if (atEdge && mc.thePlayer.onGround) {
             AxisAlignedBB checkBox = mc.thePlayer.getEntityBoundingBox()
                     .expand(-0.2, 0, -0.2)
@@ -123,18 +111,14 @@ public class Eagle extends Module {
                 shouldSneak = true;
             }
         }
-
-        // Keep sneaking for a randomized delay after leaving the edge, so it doesn't flicker.
         boolean skipTimerReset = false;
         if (!shouldSneak && System.currentTimeMillis() - edgeSneakStart < sneakDelayMs && sneakDelayMs > 30) {
             shouldSneak = true;
             skipTimerReset = true;
         }
-
         if (mc.thePlayer.onGround) {
             if (shouldSneak) {
                 if (!mc.thePlayer.isSneaking()) {
-                    // Vape's RandomValue: uniform in [defaultMin, defaultMax] = [sneakDelay/2, sneakDelay]
                     sneakDelayMs = sneakDelay / 2 + (long) (ThreadLocalRandom.current().nextDouble() * (sneakDelay / 2.0));
                 }
                 setSneak(true);
@@ -143,7 +127,6 @@ public class Eagle extends Module {
                     edgeSneakStart = System.currentTimeMillis();
                 }
             } else if (requireSneak) {
-                // Vape's stand-delay rhythm: after leaving the edge, keep sneak released for 1s while backing up.
                 if (System.currentTimeMillis() - standDelayStart < 1000L && forwardInput < 0.0f) {
                     setSneak(false);
                 }
@@ -153,7 +136,6 @@ public class Eagle extends Module {
         }
     }
 
-    /** Restores the player's physical sneak state after the world tick. */
     private void onPostTick() {
         if (!canActivate()) return;
         setSneak(sneakKeyWasDown);
@@ -175,7 +157,7 @@ public class Eagle extends Module {
 
     private boolean isBlacklisted(ItemStack stack) {
         if (stack == null || stack.getItem() == null) return false;
-        String name = Item.itemRegistry.getNameForObject(stack.getItem()).toString(); // e.g. "minecraft:tnt"
+        String name = Item.itemRegistry.getNameForObject(stack.getItem()).toString();
         String shortName = name.contains(":") ? name.substring(name.lastIndexOf(':') + 1) : name;
         for (String block : blacklistBlocks.split(",")) {
             String trimmed = block.trim();
