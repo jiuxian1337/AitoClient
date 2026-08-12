@@ -15,14 +15,14 @@ public class MoreKB extends Module {
             min = 0f, max = 500f,
             step = 1
     )
-    public int delay = 75;
+    public int delay = 100;
 
     @Slider(
             name = "HurtTime",
             min = 0f, max = 10f,
             step = 1
     )
-    public int hurtTime = 9;
+    public int hurtTime = 7;
 
     @Exclude
     private boolean stopMove;

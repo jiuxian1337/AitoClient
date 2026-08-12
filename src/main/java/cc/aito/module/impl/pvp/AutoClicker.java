@@ -67,7 +67,6 @@ public class AutoClicker extends Module {
     public AutoClicker() {
         super(new Mod("AutoClicker", ModType.PVP), "autoclicker.json");
         initialize();
-        hideIf("cps", () -> hitSelect);
     }
 
     @Override

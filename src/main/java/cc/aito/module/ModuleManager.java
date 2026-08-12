@@ -27,9 +27,9 @@ public class ModuleManager {
     public ModuleManager() {
         EventManager.INSTANCE.register(this);
 
+        modules.add(new AutoTool());
         modules.add(new AutoClicker());
         modules.add(new AimAssist());
-        modules.add(new AutoTool());
         modules.add(new MoreKB());
         modules.add(new NoJumpDelay());
         modules.add(new NoClickDelay());
