@@ -4,6 +4,8 @@ import cc.polyfrost.oneconfig.events.EventManager;
 import cc.polyfrost.oneconfig.events.event.*;
 import cc.polyfrost.oneconfig.libs.eventbus.Subscribe;
 import cc.aito.module.impl.pvp.AutoClicker;
+import cc.aito.module.impl.pvp.NoClickDelay;
+import cc.aito.module.impl.pvp.NoJumpDelay;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +19,8 @@ public class ModuleManager {
         EventManager.INSTANCE.register(this);
 
         modules.add(new AutoClicker());
+        modules.add(new NoJumpDelay());
+        modules.add(new NoClickDelay());
     }
 
     public List<Module> getModules() {
