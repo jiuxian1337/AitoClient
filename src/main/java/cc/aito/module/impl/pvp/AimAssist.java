@@ -90,14 +90,14 @@ public class AimAssist extends Module {
             min = 1f, max = 10f,
             step = 1
     )
-    public double verticalSpeed = 5.0;
+    public float verticalSpeed = 5.0F;
 
     @Slider(
             name = "Horizontal Speed",
             min = 1f, max = 10f,
             step = 1
     )
-    public double horizontalSpeed = 5.0;
+    public float horizontalSpeed = 5.0F;
 
     @Slider(
             name = "Max Angle",
@@ -111,7 +111,7 @@ public class AimAssist extends Module {
             min = 1f, max = 8f,
             step = 1
     )
-    public double distance = 5.0;
+    public float distance = 5.0F;
 
     @Dropdown(
             name = "Target Mode",
@@ -710,7 +710,7 @@ public class AimAssist extends Module {
         private void queueHorizontalAdjustment(float adjustment) {
             if (adjustment != 0.0F) {
                 adjustment *= 5.0F;
-                float speed = (float) horizontalSpeed;
+                float speed = horizontalSpeed;
                 float angleDifference = RotationUtil.getYawDifference(mc.thePlayer, target);
                 if (angleDifference <= 10.0F) {
                     pitchBoost = speed;
@@ -728,7 +728,7 @@ public class AimAssist extends Module {
         private void queueVerticalAdjustment(float adjustment, float angleDifference) {
             if (adjustment != 0.0F) {
                 adjustment *= 5.0F;
-                float speed = (float) verticalSpeed;
+                float speed = verticalSpeed;
                 float absoluteAngleDifference = Math.abs(angleDifference);
                 if (absoluteAngleDifference <= 10.0F) {
                     yawBoost = speed;
@@ -809,8 +809,8 @@ public class AimAssist extends Module {
             if (mc.theWorld == null || target == null) {
                 return;
             }
-            boolean yawSnapEnabled = (float) horizontalSpeed > 20.0F;
-            boolean pitchSnapEnabled = aimVertically && (float) verticalSpeed > 20.0F;
+            boolean yawSnapEnabled = horizontalSpeed > 20.0F;
+            boolean pitchSnapEnabled = aimVertically && verticalSpeed > 20.0F;
             boolean snapYaw = yawSnapEnabled && yawSnapped;
             boolean snapPitch = pitchSnapEnabled && pitchSnapped;
             int yawSteps = snapYaw ? Math.round(pendingYaw) : (int) pendingYaw;
@@ -894,8 +894,8 @@ public class AimAssist extends Module {
         }
 
         private void updateAim() {
-            boolean yawSnapEnabled = (float) horizontalSpeed > 20.0F;
-            boolean pitchSnapEnabled = aimVertically && (float) verticalSpeed > 20.0F;
+            boolean yawSnapEnabled = horizontalSpeed > 20.0F;
+            boolean pitchSnapEnabled = aimVertically && verticalSpeed > 20.0F;
             boolean snapYaw = yawSnapEnabled && yawSnapped;
             boolean snapPitch = pitchSnapEnabled && pitchSnapped;
             if (target == null || target.isDead) {
@@ -1100,8 +1100,8 @@ public class AimAssist extends Module {
                 smoothedTargetYawRate = yawAccel;
                 smoothedTargetPitchRate = pitchAccel;
             }
-            float horizontalSpeedValue = (float) horizontalSpeed * 0.75F;
-            float verticalSpeedValue = (float) verticalSpeed * 0.75F;
+            float horizontalSpeedValue = horizontalSpeed * 0.75F;
+            float verticalSpeedValue = verticalSpeed * 0.75F;
             float horizontalSpeedFactor = Math.max(0.0F, Math.min(1.0F, (horizontalSpeedValue - 10.0F) / 90.0F));
             float verticalSpeedFactor = Math.max(0.0F, Math.min(1.0F, (verticalSpeedValue - 10.0F) / 90.0F));
             if (Math.signum(yawError) != Math.signum(lastYawDiff) && Math.abs(yawError) > 0.1F && Math.abs(lastYawDiff) > 0.1F) {
