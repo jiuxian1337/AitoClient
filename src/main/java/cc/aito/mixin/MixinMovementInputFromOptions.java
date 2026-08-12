@@ -15,7 +15,7 @@ public abstract class MixinMovementInputFromOptions {
     @Inject(method = "updatePlayerMoveState", at = @At(value = "FIELD", target = "Lnet/minecraft/util/MovementInputFromOptions;sneak:Z", ordinal = 0, shift = At.Shift.AFTER))
     private void aito$onMoveInput(CallbackInfo ci) {
         MovementInput input = (MovementInput) (Object) this;
-        MoveInputEvent event = new MoveInputEvent(input.moveForward, input.moveStrafe, input.jump, input.sneak, 0.3D);
+        MoveInputEvent event = new MoveInputEvent(input.moveForward, input.moveStrafe, input.jump, input.sneak);
         EventManager.INSTANCE.post(event);
         input.moveForward = event.forward;
         input.moveStrafe = event.strafe;

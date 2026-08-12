@@ -6,6 +6,10 @@
   "injectors": {
     "maxShiftBy": 5
   },
-  "client": ["cc.aito.mixin.MixinPlayerControllerMP", "cc.aito.mixin.MixinRenderGlobal", "cc.aito.mixin.MixinMovementInputFromOptions"],
+  "client": [
+    "MixinMovementInputFromOptions",
+    "MixinPlayerControllerMP",
+    "MixinRenderGlobal"
+  ],
   "verbose": true
 }
