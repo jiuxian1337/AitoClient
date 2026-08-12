@@ -79,7 +79,7 @@ public class AutoClicker extends Module {
                         EntityPlayer player = (EntityPlayer) entityHit;
                         NetworkPlayerInfo info = mc.getNetHandler().getPlayerInfo(mc.thePlayer.getUniqueID());
                         int ping = info == null ? 0 : info.getResponseTime();
-                        if (mc.thePlayer.hurtTime >= 10 - attackReduceTick || player.hurtTime <= ping / 50) {
+                        if (mc.thePlayer.hurtTime >= 10 - attackReduceTick || player.hurtTime <= (ping * 2) / 50) {
                             mc.thePlayer.swingItem();
                             mc.playerController.attackEntity(mc.thePlayer, entityHit);
                         }
