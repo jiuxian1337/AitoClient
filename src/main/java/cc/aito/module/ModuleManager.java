@@ -1,5 +1,6 @@
 package cc.aito.module;
 
+import cc.aito.event.AttackEvent;
 import cc.aito.event.BlockBreakEvent;
 import cc.aito.event.BlockDamageEvent;
 import cc.polyfrost.oneconfig.events.EventManager;
@@ -125,6 +126,11 @@ public class ModuleManager {
     @Subscribe
     public void onBlockBreak(BlockBreakEvent event) {
         dispatch(module -> module.onBlockBreak(event));
+    }
+
+    @Subscribe
+    public void onAttack(AttackEvent event) {
+        dispatch(module -> module.onAttack(event));
     }
 
     @Subscribe

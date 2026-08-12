@@ -1,5 +1,6 @@
 package cc.aito.module;
 
+import cc.aito.event.AttackEvent;
 import cc.aito.event.BlockBreakEvent;
 import cc.aito.event.BlockDamageEvent;
 import cc.polyfrost.oneconfig.config.Config;
@@ -85,6 +86,10 @@ public class Module extends Config implements Wrapper {
 
     /** Called when a block is destroyed. Can be cancelled to prevent the destruction. */
     protected void onBlockBreak(BlockBreakEvent event) {
+    }
+
+    /** Called when an attack is sent. Can be cancelled to prevent it. */
+    protected void onAttack(AttackEvent event) {
     }
 
     /** Called when a packet is received. Can be cancelled. */
