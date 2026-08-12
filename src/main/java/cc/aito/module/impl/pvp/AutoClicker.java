@@ -53,6 +53,7 @@ public class AutoClicker extends Module {
     @Exclude
     private int attacks;
 
+    @Exclude
     private static final Field LEFT_CLICK_COUNTER = ReflectionHelper.findField(Minecraft.class, "leftClickCounter", "field_71429_W");
 
     private int getLeftClickCounter() {
