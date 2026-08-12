@@ -6,7 +6,7 @@ import cc.polyfrost.oneconfig.libs.eventbus.Subscribe;
 import cc.aito.module.impl.pvp.AutoClicker;
 import cc.aito.module.impl.pvp.FastPlace;
 import cc.aito.module.impl.pvp.NoClickDelay;
-import cc.aito.module.impl.pvp.NoJumpDelay;
+import cc.aito.module.impl.util_qol.NoJumpDelay;
 import cc.aito.module.impl.pvp.Eagle;
 
 import java.util.ArrayList;
