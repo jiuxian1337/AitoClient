@@ -17,6 +17,8 @@ public class AutoTool extends Module {
     private int blockBreak;
     @Exclude
     private BlockPos blockPos;
+    @Exclude
+    private int lastSlot = -1;
 
     public AutoTool() {
         super(new Mod("AutoTool", ModType.UTIL_QOL), "autotool.json");
@@ -28,6 +30,9 @@ public class AutoTool extends Module {
         if (event.player != mc.thePlayer || mc.thePlayer.getDistanceSq(event.blockPos.getX(), event.blockPos.getY(), event.blockPos.getZ()) > 25) {
             return;
         }
+        if (blockBreak <= 0) {
+            lastSlot = mc.thePlayer.inventory.currentItem;
+        }
         blockBreak = 15;
         blockPos = event.blockPos;
         update();
@@ -36,6 +41,10 @@ public class AutoTool extends Module {
     @Override
     protected void onBlockBreak(BlockBreakEvent event) {
         blockBreak = 0;
+        if (lastSlot != -1 && mc.thePlayer.inventory.currentItem != lastSlot) {
+            mc.thePlayer.inventory.currentItem = lastSlot;
+        }
+        lastSlot = -1;
     }
 
     @Override
