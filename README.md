@@ -1,22 +1,20 @@
-# OneConfigExampleMod
+# AitoClient
 
-![Powered by OneConfig](https://polyfrost.org/media/branding/badges/badge_1.svg)
-![Compact Powered by OneConfig](https://polyfrost.org/media/branding/badges/badge_2.svg)
-![Minimal Powered by OneConfig](https://polyfrost.org/media/branding/badges/badge_3.svg)
-![Minimal Compact Powered by OneConfig](https://polyfrost.org/media/branding/badges/badge_4.svg)
+A Minecraft 1.8.9 Forge client built on [OneConfig](https://github.com/Polyfrost/OneConfig), featuring a modular module system.
 
-Example mod implementing OneConfig.
+## Modules
 
-## How to use
+Each module is a OneConfig `Config` subclass under `cc.aito.module`, with its own config page, toggle and JSON profile. Modules are registered in `ModuleManager`.
 
-- Copy the template either by using GitHub's "Use this template" feature or downloading the repo manually.
-- **Remove the license named "LICENSE-TEMPLATE" and choose a new one.**
-- Refactor the template (specifically, the modid, version and name in the gradle.properties and most of the class names)
-  to a different name.
-- Have fun modding! :D
+- `AutoClicker` (`cc.aito.module.impl.pvp`) — CPS / NoTargetCPS / HitSelect / AttackReduceTick
 
-## Need to update to a newer commit of this template?
+## Development
 
-Check out these update guides:
-- [Updating to commit `fd8e095`](update-to-fd8e095.md) (most recent update)
-- [Updating to commit `301a6ca`](update-to-301a6ca.md)
+Requirements: JDK 17 (Gradle daemon / build) and JDK 8 (1.8.9 client runtime).
+
+```bash
+./gradlew :1.8.9-forge:compileJava   # compile
+./gradlew :1.8.9-forge:runClient     # run the client (uses Java 8 automatically)
+```
+
+The client JVM is pinned to a Java 8 toolchain in `build.gradle.kts` because legacy Forge's Launchwrapper cannot run on Java 9+.

@@ -23,7 +23,7 @@ val mod_version: String by project
 val mod_id: String by project
 val mod_archives_name: String by project
 
-// Replaces the variables in `ExampleMod.java` to the ones specified in `gradle.properties`.
+// Replaces the variables in `AitoClient.java` to the ones specified in `gradle.properties`.
 blossom {
     replaceToken("@VER@", mod_version)
     replaceToken("@NAME@", mod_name)
@@ -34,7 +34,7 @@ blossom {
 version = mod_version
 // Sets the group, make sure to change this to your own. It can be a website you own backwards or your GitHub username.
 // e.g. com.github.<your username> or com.<your domain>
-group = "org.polyfrost"
+group = "cc.aito"
 
 // Sets the name of the output jar (the one you put in your mods folder and send to other people)
 // It outputs all versions of the mod into the `versions/{mcVersion}/build` directory.
@@ -64,6 +64,12 @@ loom {
     }
     // Configures the name of the mixin "refmap"
     mixin.defaultRefmapName.set("mixins.${mod_id}.refmap.json")
+}
+
+// Legacy Forge (1.8.9/1.12.2) crashes on Java 9+ (Launchwrapper casts the classloader to URLClassLoader),
+// so the client process must run on Java 8, even though the Gradle daemon runs on 17 for the build plugins.
+val java8Launcher = javaToolchains.launcherFor {
+    languageVersion.set(JavaLanguageVersion.of(8))
 }
 
 // Creates the shade/shadow configuration, so we can include libraries inside our mod, rather than having to add them separately.
@@ -102,6 +108,14 @@ dependencies {
 }
 
 tasks {
+    // Legacy Forge client must run on Java 8 (see java8Launcher above), otherwise
+    // net.minecraft.launchwrapper.Launch throws a ClassCastException on Java 9+.
+    withType<JavaExec>().configureEach {
+        if (name.startsWith("runClient")) {
+            executable = java8Launcher.get().executablePath.asFile.absolutePath
+        }
+    }
+
     // Processes the `src/resources/mcmod.info`, `fabric.mod.json`, or `mixins.${mod_id}.json` and replaces
     // the mod id, name and version with the ones in `gradle.properties`
     processResources {
