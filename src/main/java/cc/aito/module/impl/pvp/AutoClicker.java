@@ -8,11 +8,14 @@ import cc.polyfrost.oneconfig.config.data.ModType;
 import cc.polyfrost.oneconfig.events.event.RenderEvent;
 import cc.polyfrost.oneconfig.events.event.Stage;
 import cc.polyfrost.oneconfig.events.event.TickEvent;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.network.NetworkPlayerInfo;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import cc.aito.module.Module;
+import net.minecraftforge.fml.relauncher.ReflectionHelper;
 
+import java.lang.reflect.Field;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class AutoClicker extends Module {
@@ -50,6 +53,16 @@ public class AutoClicker extends Module {
     @Exclude
     private int attacks;
 
+    private static final Field LEFT_CLICK_COUNTER = ReflectionHelper.findField(Minecraft.class, "leftClickCounter", "field_71429_W");
+
+    private int getLeftClickCounter() {
+        try {
+            return LEFT_CLICK_COUNTER.getInt(mc);
+        } catch (IllegalAccessException e) {
+            return 0;
+        }
+    }
+
     public AutoClicker() {
         super(new Mod("AutoClicker", ModType.PVP), "autoclicker.json");
         initialize();
@@ -58,29 +71,33 @@ public class AutoClicker extends Module {
 
     @Override
     protected void onTick(TickEvent event) {
-        if (event.stage == Stage.START && mc.gameSettings.keyBindAttack.isKeyDown()) {
-            entityHit = mc.objectMouseOver.entityHit;
-            if (entityHit != null) {
-                if (hitSelect && entityHit instanceof EntityPlayer) {
-                    EntityPlayer player = (EntityPlayer) entityHit;
-                    NetworkPlayerInfo info = mc.getNetHandler().getPlayerInfo(mc.thePlayer.getUniqueID());
-                    int ping = info == null ? 0 : info.getResponseTime();
-                    if (mc.thePlayer.hurtTime >= 10 - attackReduceTick || player.hurtTime <= ping / 50) {
-                        mc.thePlayer.swingItem();
-                        mc.playerController.attackEntity(mc.thePlayer, entityHit);
-                    }
+        if (event.stage == Stage.START && mc.thePlayer != null && mc.gameSettings.keyBindAttack.isKeyDown()) {
+            entityHit = mc.objectMouseOver == null ? null : mc.objectMouseOver.entityHit;
+            if (mc.currentScreen == null && !mc.thePlayer.isUsingItem() && getLeftClickCounter() <= 0) {
+                if (entityHit != null) {
+                    if (hitSelect && entityHit instanceof EntityPlayer) {
+                        EntityPlayer player = (EntityPlayer) entityHit;
+                        NetworkPlayerInfo info = mc.getNetHandler().getPlayerInfo(mc.thePlayer.getUniqueID());
+                        int ping = info == null ? 0 : info.getResponseTime();
+                        if (mc.thePlayer.hurtTime >= 10 - attackReduceTick || player.hurtTime <= ping / 50) {
+                            mc.thePlayer.swingItem();
+                            mc.playerController.attackEntity(mc.thePlayer, entityHit);
+                        }
 
+                    } else {
+                        for (int i = 0; i < attacks; i++) {
+                            mc.thePlayer.swingItem();
+                            mc.playerController.attackEntity(mc.thePlayer, entityHit);
+                        }
+                        attacks = 0;
+                    }
                 } else {
                     for (int i = 0; i < attacks; i++) {
                         mc.thePlayer.swingItem();
-                        mc.playerController.attackEntity(mc.thePlayer, entityHit);
                     }
                     attacks = 0;
                 }
             } else {
-                for (int i = 0; i < attacks; i++) {
-                    mc.thePlayer.swingItem();
-                }
                 attacks = 0;
             }
         }
