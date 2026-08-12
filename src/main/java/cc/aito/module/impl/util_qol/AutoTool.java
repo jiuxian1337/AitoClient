@@ -55,7 +55,11 @@ public class AutoTool extends Module {
     }
 
     private void update() {
-        if (mc.objectMouseOver == null || blockBreak <= 0) {
+        if (mc.objectMouseOver == null || blockBreak <= 0 || !mc.gameSettings.keyBindAttack.isKeyDown()) {
+            if (lastSlot != -1) {
+                mc.thePlayer.inventory.currentItem = lastSlot;
+                lastSlot = -1;
+            }
             return;
         }
         blockBreak--;
