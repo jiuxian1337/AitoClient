@@ -25,7 +25,9 @@ public class MoreKB extends Module {
     public int hurtTime = 9;
 
     @Exclude
-    private long stopMoveUntil;
+    private boolean stopMove;
+    @Exclude
+    private long lastStop;
 
     public MoreKB() {
         super(new Mod("MoreKB", ModType.PVP), "morekb.json");
@@ -34,18 +36,22 @@ public class MoreKB extends Module {
 
     @Override
     protected void onAttack(AttackEvent event) {
-        if (mc.thePlayer.hurtTime <= hurtTime) {
-            stopMoveUntil = System.currentTimeMillis() + delay;
+        if (mc.thePlayer.hurtTime < hurtTime) {
+            stopMove = true;
         } else {
-            stopMoveUntil = 0;
+            stopMove = false;
         }
     }
 
     @Override
     protected void onMoveInput(MoveInputEvent event) {
-        if (System.currentTimeMillis() < stopMoveUntil) {
-            event.forward = 0;
-            event.strafe = 0;
+        if (stopMove) {
+            stopMove = false;
+            if (System.currentTimeMillis() - lastStop > delay) {
+                lastStop = System.currentTimeMillis();
+                event.forward = 0;
+                event.strafe = 0;
+            }
         }
     }
 }
