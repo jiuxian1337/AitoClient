@@ -4,8 +4,10 @@ import cc.polyfrost.oneconfig.events.EventManager;
 import cc.polyfrost.oneconfig.events.event.*;
 import cc.polyfrost.oneconfig.libs.eventbus.Subscribe;
 import cc.aito.module.impl.pvp.AutoClicker;
+import cc.aito.module.impl.pvp.FastPlace;
 import cc.aito.module.impl.pvp.NoClickDelay;
 import cc.aito.module.impl.pvp.NoJumpDelay;
+import cc.aito.module.impl.pvp.Eagle;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +23,8 @@ public class ModuleManager {
         modules.add(new AutoClicker());
         modules.add(new NoJumpDelay());
         modules.add(new NoClickDelay());
+        modules.add(new FastPlace());
+        modules.add(new Eagle());
     }
 
     public List<Module> getModules() {

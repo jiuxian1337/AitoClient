@@ -8,18 +8,18 @@ import cc.polyfrost.oneconfig.events.event.TickEvent;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
 
-public class NoClickDelay extends Module {
+public class FastPlace extends Module {
 
-    public NoClickDelay() {
-        super(new Mod("NoClickDelay", ModType.PVP), "noclickdelay.json");
+    public FastPlace() {
+        super(new Mod("FastPlace", ModType.PVP), "fastplace.json");
         initialize();
     }
 
     @Override
     protected void onTick(TickEvent event) {
-        if (event.stage == Stage.START) {
-            // Pass both MCP and SRG names: dev uses leftClickCounter, production uses field_2559.
-            ReflectionHelper.setPrivateValue(Minecraft.class, mc, 0, "leftClickCounter", "field_71429_W");
+        if (event.stage == Stage.START && mc.gameSettings.keyBindUseItem.isKeyDown()) {
+            // Pass both MCP and SRG names: dev uses rightClickDelayTimer, production uses field_2568.
+            ReflectionHelper.setPrivateValue(Minecraft.class, mc, 0, "rightClickDelayTimer", "field_71467_ac");
         }
     }
 }

@@ -23,11 +23,14 @@ public class Module extends Config implements Wrapper {
     }
 
     /**
+     * Convenience constructor. Modules default to disabled; use the {@link #Module(Mod, String, boolean)}
+     * overload to opt in to being enabled by default.
+     *
      * @param modData    information about the mod
      * @param configFile file where config is stored
      */
     public Module(Mod modData, String configFile) {
-        this(modData, configFile, true);
+        this(modData, configFile, false);
     }
 
     /** Called after the game starts. */

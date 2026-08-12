@@ -51,9 +51,9 @@ public class AutoClicker extends Module {
     private int attacks;
 
     public AutoClicker() {
-        super(new Mod("AutoClicker", ModType.PVP), "auto-clicker.json");
-        hideIf("cps", () -> hitSelect);
+        super(new Mod("AutoClicker", ModType.PVP), "autoclicker.json");
         initialize();
+        hideIf("cps", () -> hitSelect); // must be after initialize(): optionNames is built there
     }
 
     @Override
