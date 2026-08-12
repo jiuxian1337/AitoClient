@@ -1,5 +1,7 @@
 package cc.aito.module;
 
+import cc.aito.event.BlockBreakEvent;
+import cc.aito.event.BlockDamageEvent;
 import cc.polyfrost.oneconfig.config.Config;
 import cc.polyfrost.oneconfig.config.data.Mod;
 import cc.polyfrost.oneconfig.events.EventManager;
@@ -75,6 +77,14 @@ public class Module extends Config implements Wrapper {
 
     /** Called when a chat message is sent. Can be cancelled. */
     protected void onChatSend(ChatSendEvent event) {
+    }
+
+    /** Called when a block starts being damaged or its damage progresses. */
+    protected void onBlockDamage(BlockDamageEvent event) {
+    }
+
+    /** Called when a block is destroyed. Can be cancelled to prevent the destruction. */
+    protected void onBlockBreak(BlockBreakEvent event) {
     }
 
     /** Called when a packet is received. Can be cancelled. */

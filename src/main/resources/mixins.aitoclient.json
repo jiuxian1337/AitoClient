@@ -6,6 +6,6 @@
   "injectors": {
     "maxShiftBy": 5
   },
-  "client": [],
+  "client": ["cc.aito.mixin.MixinPlayerControllerMP", "cc.aito.mixin.MixinRenderGlobal"],
   "verbose": true
 }

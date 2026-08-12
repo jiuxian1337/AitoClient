@@ -1,11 +1,14 @@
 package cc.aito.module;
 
+import cc.aito.event.BlockBreakEvent;
+import cc.aito.event.BlockDamageEvent;
 import cc.polyfrost.oneconfig.events.EventManager;
 import cc.polyfrost.oneconfig.events.event.*;
 import cc.polyfrost.oneconfig.libs.eventbus.Subscribe;
 import cc.aito.module.impl.pvp.AutoClicker;
 import cc.aito.module.impl.pvp.FastPlace;
 import cc.aito.module.impl.pvp.NoClickDelay;
+import cc.aito.module.impl.util_qol.AutoTool;
 import cc.aito.module.impl.util_qol.NoJumpDelay;
 import cc.aito.module.impl.pvp.Eagle;
 
@@ -21,6 +24,7 @@ public class ModuleManager {
         EventManager.INSTANCE.register(this);
 
         modules.add(new AutoClicker());
+        modules.add(new AutoTool());
         modules.add(new NoJumpDelay());
         modules.add(new NoClickDelay());
         modules.add(new FastPlace());
@@ -111,6 +115,16 @@ public class ModuleManager {
     @Subscribe
     public void onChatSend(ChatSendEvent event) {
         dispatch(module -> module.onChatSend(event));
+    }
+
+    @Subscribe
+    public void onBlockDamage(BlockDamageEvent event) {
+        dispatch(module -> module.onBlockDamage(event));
+    }
+
+    @Subscribe
+    public void onBlockBreak(BlockBreakEvent event) {
+        dispatch(module -> module.onBlockBreak(event));
     }
 
     @Subscribe
