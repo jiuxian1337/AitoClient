@@ -83,23 +83,19 @@ public class AutoClicker extends Module {
                             mc.thePlayer.swingItem();
                             mc.playerController.attackEntity(mc.thePlayer, entityHit);
                         }
-
                     } else {
                         for (int i = 0; i < attacks; i++) {
                             mc.thePlayer.swingItem();
                             mc.playerController.attackEntity(mc.thePlayer, entityHit);
                         }
-                        attacks = 0;
                     }
                 } else {
                     for (int i = 0; i < attacks; i++) {
                         mc.thePlayer.swingItem();
                     }
-                    attacks = 0;
                 }
-            } else {
-                attacks = 0;
             }
+            attacks = 0;
         }
     }
 
