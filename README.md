@@ -1,18 +1,19 @@
 # AitoClient
 
-基于 [OneConfig](https://github.com/Polyfrost/OneConfig) 的 Minecraft 1.8.9 Forge 客户端，采用模块化体系——每个模块是独立的 `Config`，自带开关、配置页和持久化文件。
+Minecraft 1.8.9 Forge 客户端，基于 [OneConfig](https://github.com/Polyfrost/OneConfig)。功能以模块形式组织，覆盖 PVP、工具等多个场景；每个模块的开关与参数都在游戏内的 OneConfig 界面中完成，无需手动改文件。
 
-## 模块
+## 安装
 
-模块位于 `cc.aito.module.impl.pvp`，在 `ModuleManager` 中注册。每个模块默认关闭，需要在 OneConfig 界面里手动开启。
+1. 构建出产物 jar（见下方「构建」）。
+2. 将 `AitoClient-1.8.9-forge-1.0.0.jar` 放入 Minecraft 的 `mods` 文件夹。
+3. 启动游戏。首次启动时会自动下载并注入 OneConfig（位于游戏目录的 `./OneConfig/`），无需手动安装。
+4. 进入游戏后按 OneConfig 界面键（默认 **右 Shift**）打开配置，开启并调整需要的模块。
 
-| 模块 | 说明 |
-|---|---|
-| **AutoClicker** | 自动攻击。可调 CPS / NoTargetCPS / HitSelect / AttackReduceTick |
-| **NoJumpDelay** | 消除跳跃间隔（连跳） |
-| **NoClickDelay** | 消除攻击点击冷却 |
-| **FastPlace** | 极速放置方块（消除放置延迟） |
-| **Eagle** | 边缘自动蹲（合法搭桥辅助）。含 Pitch 检查、方块黑白名单、随机蹲延迟、方块数量 HUD |
+## 使用
+
+- 所有模块默认关闭，在 OneConfig 界面中手动开启。
+- 模块的开关与参数会保存到各自的配置文件，重启后自动恢复。
+- 具体有哪些模块、各自支持哪些选项，以游戏内 OneConfig 界面为准。
 
 ## 环境要求
 
@@ -20,41 +21,18 @@
 |---|---|
 | Minecraft | 1.8.9 |
 | Forge | 11.15.1.2318 |
-| Java（客户端） | 8（Legacy Forge 的 Launchwrapper 无法在 Java 9+ 上运行） |
+| Java（运行） | 8 |
 | Java（构建） | 17 |
-| OptiFine | 可选（已验证可与预览版共存） |
+| OptiFine | 可选 |
 
-## 安装
-
-1. 构建出产物 jar（见下方开发）。
-2. 将 `versions/1.8.9-forge/build/libs/AitoClient-1.8.9-forge-1.0.0.jar` 放入 `mods` 文件夹。
-3. 首次启动时，内置的启动器会自动下载 OneConfig 到游戏目录的 `./OneConfig/` 并注入，无需手动安装。
-4. 进入游戏，按 OneConfig 的界面按键（默认右 Shift）打开配置。
-
-## 开发
+## 构建
 
 ```bash
-./gradlew :1.8.9-forge:compileJava   # 编译
-./gradlew :1.8.9-forge:build         # 打包（产物在 versions/1.8.9-forge/build/libs/）
-./gradlew :1.8.9-forge:runClient     # 运行开发客户端（自动使用 Java 8 工具链）
+./gradlew :1.8.9-forge:build
 ```
 
-- Gradle 守护进程跑在 Java 17（构建插件要求），`runClient` 的客户端进程通过 `build.gradle.kts` 里的工具链配置固定为 Java 8。
-- 打包产物 `AitoClient-1.8.9-forge-1.0.0.jar`（不带 `-dev` 后缀的那个）才是放进 `mods` 的 jar。
+产物位于 `versions/1.8.9-forge/build/libs/`，取不带 `-dev` 后缀的 jar 放入 `mods`。
 
-## 项目结构
+## 开发者文档
 
-```
-src/main/java/cc/aito/
-├── AitoClient.java              # 主类（@Mod 入口）
-├── module/
-│   ├── Module.java              # 模块基类（extends Config，含全部事件钩子）
-│   ├── ModuleManager.java       # 事件分发：向所有启用模块派发 OneConfig 事件
-│   └── impl/pvp/                # PVP 模块
-└── utils/
-    └── Wrapper.java             # mc 实例等共享工具
-```
-
-## 文档
-
-- [CODING_STANDARD.md](CODING_STANDARD.md) — 代码开发规范（效率/可读性/安全性/质量）
+- [CODING_STANDARD.md](CODING_STANDARD.md) — 代码开发规范
