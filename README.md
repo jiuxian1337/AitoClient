@@ -1,6 +1,7 @@
 # AitoClient
 
 Minecraft 1.8.9 Forge 客户端，基于 [OneConfig](https://github.com/Polyfrost/OneConfig)。功能以模块形式组织，覆盖 PVP、工具等多个场景；每个模块的开关与参数都在游戏内的 OneConfig 界面中完成，无需手动改文件。
+<img width="1920" height="1440" alt="4e038d0e58315f8c7bef8747f9f37dee" src="https://github.com/user-attachments/assets/49efd924-4af8-49e6-a9e7-cc7e6d9eba57" />
 
 ## 安装
 
