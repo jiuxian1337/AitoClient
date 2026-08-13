@@ -11,6 +11,7 @@ import cc.aito.module.impl.pvp.AimAssist;
 import cc.aito.module.impl.pvp.AutoClicker;
 import cc.aito.module.impl.pvp.FastPlace;
 import cc.aito.module.impl.pvp.MoreKB;
+import cc.aito.module.impl.pvp.Teams;
 import cc.aito.module.impl.pvp.NoClickDelay;
 import cc.aito.module.impl.util_qol.AutoTool;
 import cc.aito.module.impl.util_qol.NoJumpDelay;
@@ -30,6 +31,7 @@ public class ModuleManager {
 
         modules.add(new AutoTool());
         modules.add(new AutoClicker());
+        modules.add(new Teams());
         modules.add(new AimAssist());
         modules.add(new MoreKB());
         modules.add(new NoJumpDelay());

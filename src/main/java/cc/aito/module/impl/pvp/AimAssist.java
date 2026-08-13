@@ -302,6 +302,9 @@ public class AimAssist extends Module {
             if (!targetPlayers) {
                 return false;
             }
+            if (Teams.isSameTeam(mc.thePlayer, (EntityPlayer) target)) {
+                return false;
+            }
             if (ignoreNaked && isNaked(target)) {
                 return false;
             }
